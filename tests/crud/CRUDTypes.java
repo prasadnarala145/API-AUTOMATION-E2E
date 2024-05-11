@@ -9,8 +9,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import io.qameta.allure.Description;
 import io.qameta.allure.Owner;
 import io.restassured.RestAssured;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import io.restassured.specification.RequestSpecification;
 import org.assertj.core.api.Assertions;
@@ -37,6 +39,7 @@ public class CRUDTypes {
                 .when().body(payloadManager.createPayload())
                 .post().then().log().all();
         response.time(Matchers.lessThan(10000L));
+
         response.statusCode(200);
         JsonPath jsonPath = response.extract().jsonPath();
         bookingId = jsonPath.get("bookingid");
@@ -46,9 +49,10 @@ public class CRUDTypes {
         Assert.assertNotNull(bookingId);
         Assertions.assertThat(bookingId).isNotNull();
         Assertions.assertThat(firstName).isEqualToIgnoringCase("prasad").isNotEqualTo("jack");
+
     }
 
-    @Owner("Ram kumar")
+   @Owner("Ram kumar")
     @Description("Verify that the Status Code is 200 when we Create a Token.")
     public void testCreateToken() {
 
@@ -67,7 +71,7 @@ public class CRUDTypes {
         Assertions.assertThat(token).isNotNull().hasSize(15);
     }
 
-    @Owner("Ram kumar")
+   @Owner("Ram kumar")
     @Description("Verify that the Status Code is 200 When we Update an existing Booking.")
     public void testUpdateBooking() throws JsonProcessingException {
 //        testCreateToken();
@@ -90,7 +94,8 @@ public class CRUDTypes {
         String firstName = jsonPath.getString("firstname");
         Assertions.assertThat(firstName).isEqualTo("PrasadNew");
     }
-    @Owner("Ram kumar")
+
+   @Owner("Ram kumar")
     @Description("Verify that the Booking Id is retrieved from Get Booking Id.")
     public void testGetBookingById() {
         payloadManager = new PayloadManager();
@@ -105,6 +110,7 @@ public class CRUDTypes {
         String firstName = jsonPath.getString("firstname");
         Assertions.assertThat(firstName).isEqualTo("PrasadNew");
     }
+
     @Owner("Ram kumar")
     @Description("Verify that the Booking Id not exists from Get Booking Id.")
     public void testGetBookingByIdNotExists() {
@@ -117,7 +123,8 @@ public class CRUDTypes {
                 .assertThat().statusCode(404);
     }
 
-    @Owner("Ram kumar")
+
+   @Owner("Ram kumar")
     @Description("Verify that the Created Booking is Deleted")
     public void testDeleteBooking(){
         requestSpecification.basePath(APIConstants.DELETE_BOOKING+bookingId);

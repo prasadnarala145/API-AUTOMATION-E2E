@@ -22,6 +22,7 @@ public class PayloadManager {
         booking.setBookingDates(bookingdates);
         booking.setAdditionalneeds("Breakfast and Lunch");
 
+
         gson = new Gson();
         String bookingString = gson.toJson(booking);
         return bookingString;
